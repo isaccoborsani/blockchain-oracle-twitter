@@ -33,20 +33,25 @@ def main():
                    "10\" -m=\"tw_user_id={}tw_user_name={}tw_id_reply_to={}\" "
 
     api = utils.get_api_tweepy()
-    mentions = api.mentions_timeline(count=1)
+    mentions = api.mentions_timeline(count=10)
+
+    already_processed_mentions = utils.load_resource("already_processed_mentions.txt")
+
     last_twitter_users = clean_twitter_users()
     twitter_user_ids = get_twitter_user_ids(last_twitter_users)
 
     for tweet in mentions:
         m = re.search('[0-9a-zA-Z\.\_\-]{44}', tweet.text)
 
-        if tweet.user.id not in twitter_user_ids and m is not None:
+        if tweet.id not in already_processed_mentions and tweet.user.id not in twitter_user_ids and m is not None:
             os.system(bash_command.format(m.group(0), tweet.user.id, tweet.user.screen_name, tweet.id))
+            already_processed_mentions.append(str(tweet.id))
             last_twitter_users.append(str(tweet.user.id) + " " + str(round(time.time() * 1000)))
         else:
             continue
 
     utils.update_resource(last_twitter_users, 'twitter_users.txt')
+    utils.update_resource(already_processed_mentions, 'already_processed_mentions.txt')
 
 
 if __name__ == "__main__":
