@@ -35,8 +35,9 @@ def main():
                     and re.search('tw_user_id=\d{1,}tw_user_name=(.*)tw_id_reply_to=(.*)',
                                   single_trx['message']) is not None:
                 twitter_users_to_be_processed[single_trx['message'].split("tw_id_reply_to=")[
-                    1]] = "Thank you @{} for your interest, check your balance ;-)".format(
-                    single_trx['message'].split("tw_user_name=")[1].split("tw_id_reply_to")[0])
+                    1]] = "Thank you @{} for your interest, check your balance ;-) You can also check the transaction " \
+                          "here: https://testexplorer.takamaka.dev/searchtransaction/{}".format(
+                    single_trx['message'].split("tw_user_name=")[1].split("tw_id_reply_to")[0], single_trx['SITH'])
                 #
 
                 siths.append(single_trx['SITH'])

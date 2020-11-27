@@ -41,14 +41,16 @@ def main():
     twitter_user_ids = get_twitter_user_ids(last_twitter_users)
 
     for tweet in mentions:
-        m = re.search('[0-9a-zA-Z\.\_\-]{44}', tweet.text)
-
-        if tweet.id not in already_processed_mentions and tweet.user.id not in twitter_user_ids and m is not None:
-            os.system(bash_command.format(m.group(0), tweet.user.id, tweet.user.screen_name, tweet.id))
+        tweet_id = str(tweet.id)
+        if tweet_id not in already_processed_mentions:
             already_processed_mentions.append(str(tweet.id))
-            last_twitter_users.append(str(tweet.user.id) + " " + str(round(time.time() * 1000)))
-        else:
-            continue
+            m = re.search('[0-9a-zA-Z\.\_\-]{44}', tweet.text)
+
+            if str(tweet.user.id) not in twitter_user_ids and m is not None:
+                os.system(bash_command.format(m.group(0), tweet.user.id, tweet.user.screen_name, tweet.id))
+                last_twitter_users.append(str(tweet.user.id) + " " + str(round(time.time() * 1000)))
+            else:
+                continue
 
     utils.update_resource(last_twitter_users, 'twitter_users.txt')
     utils.update_resource(already_processed_mentions, 'already_processed_mentions.txt')
