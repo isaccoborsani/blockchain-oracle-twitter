@@ -30,17 +30,23 @@ def main():
         twitter_users_to_be_processed = {}
 
         for single_trx in trx_list:
-            if single_trx['SITH'] not in siths and 'message' in single_trx \
-                    and single_trx['message'] != '' \
+
+            upper_dict = {}
+
+            for key, val in single_trx.items():
+                upper_dict[key.upper()] = val
+            
+            if upper_dict['SITH'] not in siths and 'MESSAGE' in upper_dict \
+                    and upper_dict['MESSAGE'] != '' \
                     and re.search('tw_user_id=\d{1,}tw_user_name=(.*)tw_id_reply_to=(.*)',
-                                  single_trx['message']) is not None:
-                twitter_users_to_be_processed[single_trx['message'].split("tw_id_reply_to=")[
+                                  upper_dict['MESSAGE']) is not None:
+                twitter_users_to_be_processed[upper_dict['MESSAGE'].split("tw_id_reply_to=")[
                     1]] = "Thank you @{} for your interest, check your balance ;-) You can also check the transaction " \
                           "here: https://testexplorer.takamaka.dev/searchtransaction/{}".format(
-                    single_trx['message'].split("tw_user_name=")[1].split("tw_id_reply_to")[0], single_trx['SITH'])
+                    upper_dict['MESSAGE'].split("tw_user_name=")[1].split("tw_id_reply_to")[0], upper_dict['SITH'])
                 #
 
-                siths.append(single_trx['SITH'])
+                siths.append(upper_dict['SITH'])
                 utils.update_resource(siths, 'siths.txt')
 
         if len(twitter_users_to_be_processed.items()) > 0:
