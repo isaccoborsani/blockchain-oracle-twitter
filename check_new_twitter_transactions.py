@@ -37,6 +37,7 @@ def main():
                 upper_dict[key.upper()] = val
             
             if upper_dict['SITH'] not in siths and 'MESSAGE' in upper_dict \
+                    and upper_dict['MESSAGE'] is not None \
                     and upper_dict['MESSAGE'] != '' \
                     and re.search('tw_user_id=\d{1,}tw_user_name=(.*)tw_id_reply_to=(.*)',
                                   upper_dict['MESSAGE']) is not None:
