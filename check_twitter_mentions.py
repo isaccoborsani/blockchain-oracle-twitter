@@ -29,8 +29,8 @@ def get_twitter_user_ids(twitter_users):
 def main():
     bash_command = "java -cp ./takamakachain-1.0-SNAPSHOT-jar-with-dependencies.jar " \
                    " -Djava.awt.headless=true " \
-                   "com.h2tcoin.takamakachain.main.DirectCall -e=test -w=walletIsacco -s=asdasdasd -i=0 -p=\"{} 10 " \
-                   "10\" -m=\"tw_user_id={}tw_user_name={}tw_id_reply_to={}\" "
+                   "com.h2tcoin.takamakachain.main.DirectCall -e=test -w=walletIsacco -s=asdasdasd -i=0 -p=\"{} 50 " \
+                   "50\" -m=\"tw_user_id={}tw_user_name={}tw_id_reply_to={}\" "
 
     api = utils.get_api_tweepy()
     mentions = api.mentions_timeline(count=10)
